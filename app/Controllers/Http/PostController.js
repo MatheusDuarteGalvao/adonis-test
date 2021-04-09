@@ -7,6 +7,9 @@
 /**
  * Resourceful controller for interacting with posts
  */
+
+const Post = use('App/Models/Post')
+
 class PostController {
   /**
    * Show a list of all posts.
@@ -18,6 +21,9 @@ class PostController {
    * @param {View} ctx.view
    */
   async index ({ request, response, view }) {
+    const posts = await Post.all()
+
+    return posts
   }
 
   /**
@@ -40,7 +46,17 @@ class PostController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async store ({ request, response }) {
+  async store ({ request, response, auth }) {
+    const data = request.only(['title', 'content'])
+
+    const post = await Post.create({
+      ...data,
+      user_id: auth.user_id
+    })
+
+    await post.load('user')
+
+    return post
   }
 
   /**

@@ -18,3 +18,6 @@ const Route = use('Route')
 
 Route.post('/users', 'UserController.store')
 Route.post('/sessions', 'SessionController.store')
+
+Route.get('/posts', 'PostController.index')
+Route.post('/posts', 'PostController.store').middleware('auth')

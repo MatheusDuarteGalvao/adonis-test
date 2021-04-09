@@ -11,6 +11,13 @@ class UserController {
 
     const user = await User.create(data)
 
+    await Mail.send('mails.welcome', user.toJSON(), (message) => {
+      message
+        .to(user.email)
+        .from('matheusduartegalvao@gmail.com')
+        .subject('Seja muito bem-vindo !!')
+    })
+
     return user
   }
 }
